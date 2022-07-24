@@ -1,11 +1,44 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <title>User</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
+<div>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+        </tr>
+        <tr th:each="users : ${user}">
+            <td th:utext="${users.getId()}">name</td>
+            <td th:utext="${users.getUsername()}">username</td>
 
-
+        </tr>
+    </table>
+</div>
+<a href="/logout">Выйти</a>
 </body>
 </html>
+<!--<!DOCTYPE html>-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>User</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div>-->
+<!--    <table border="1">-->
+<!--        <tr>-->
+<!--            <th>ID</th>-->
+<!--            <th>Имя</th>-->
+<!--        </tr>-->
+<!--        <tr th:each="users : ${user}">-->
+<!--            <td th:utext="${users.getId()}">id</td>-->
+<!--            <td th:utext="${users.getUsername()}">username</td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--</div>-->
+<!--<a href="/logout">Выйти</a>-->
+<!--</body>-->
+<!--</html>-->
