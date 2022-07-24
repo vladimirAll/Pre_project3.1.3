@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
@@ -27,13 +28,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void addUser(User user) {
         userRepository.save(user);
     }
 
     @Override
     public User findById(Long id) {
-        return userRepository.getReferenceById(id);
+        return userRepository.getById(id);
     }
 
     @Override
@@ -42,32 +44,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Role> findAllRoles() {
-        return roleRepository.findAll();
-    }
-
-    @Override
-    public void updateUser(Long id, User user) {
-        User userUp = findById(id);
-        userUp.setUsername(user.getUsername());
-        userUp.setPassword(user.getPassword());
-        userUp.setRoles(user.getRoles());
-        userRepository.save(userUp);
-    }
-    @Override
+    @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public List<Role> findRolesByName(String name) {
-        List<Role> roles = new ArrayList<>();
-        for (Role role : findAllRoles()) {
-            if (name.contains(role.getName()))
-                roles.add(role);
-        }
-        return roles;
+    @Transactional
+    public void addRole(User user) {
+        List<Role> roles = List.of(roleRepository.getById(2L));
+        user.setRoles(roles);
+        userRepository.save(user);
     }
+
 
     @Override
     public User findUserByUsername(String username) {

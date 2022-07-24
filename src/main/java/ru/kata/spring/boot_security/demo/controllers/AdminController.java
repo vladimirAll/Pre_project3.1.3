@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
+
 @Controller
 public class AdminController {
 
@@ -26,14 +27,12 @@ public class AdminController {
     @GetMapping("/new")
     public String newUser(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("roles", userServiceImpl.findAllRoles());
         return "new";
     }
 
     @PostMapping("/admin")
-    public String addUser(@ModelAttribute("user") User user, @RequestParam(value = "roles") String name ) {
-        user.setRoles(userServiceImpl.findRolesByName(name));
-        userServiceImpl.addUser(user);
+    public String addUser(@ModelAttribute("user") User user) {
+        userServiceImpl.addRole(user);
         return "redirect:/admin";
     }
 
@@ -50,8 +49,8 @@ public class AdminController {
     }
 
     @PostMapping("update/{id}")
-    public String addUpdateUser(Long  id, User user) {
-        userServiceImpl.updateUser(id, user);
+    public String addUpdateUser(User user) {
+        userServiceImpl.addRole(user);
         return "redirect:/admin";
     }
 }
