@@ -1,41 +1,31 @@
 package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Set;
 
 
 @Service
 public class UserServiceImpl implements UserService {
-
-    @PersistenceContext
-    private EntityManager em;
-
     private final UserRepository userRepository;
-
     private final RoleRepository roleRepository;
+    private  PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-    }
-
-    @Override
-    @Transactional
-    public void addUser(User user) {
-        userRepository.save(user);
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -57,6 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void addRole(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         Set<Role> roles = Set.of(roleRepository.getById(2L));
         user.setRoles(roles);
         userRepository.save(user);
