@@ -10,12 +10,17 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @PersistenceContext
+    private EntityManager em;
 
     private final UserRepository userRepository;
 
@@ -52,7 +57,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void addRole(User user) {
-        List<Role> roles = List.of(roleRepository.getById(2L));
+        Set<Role> roles = Set.of(roleRepository.getById(2L));
         user.setRoles(roles);
         userRepository.save(user);
     }
