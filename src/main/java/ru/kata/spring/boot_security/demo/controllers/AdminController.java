@@ -9,6 +9,7 @@ import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
     private final UserServiceImpl userServiceImpl;
@@ -18,7 +19,7 @@ public class AdminController {
         this.userServiceImpl = userServiceImpl;
     }
 
-    @GetMapping("/admin")
+    @GetMapping
     public String getUsers(Model model) {
         model.addAttribute("user", userServiceImpl.findAllUsers());
         return "admin";
@@ -30,9 +31,9 @@ public class AdminController {
         return "new";
     }
 
-    @PostMapping("/admin")
+    @PostMapping
     public String addUser(@ModelAttribute("user") User user) {
-        userServiceImpl.addRole(user);
+        userServiceImpl.addUser(user);
         return "redirect:/admin";
     }
 
@@ -50,7 +51,7 @@ public class AdminController {
 
     @PostMapping("update/{id}")
     public String addUpdateUser(User user) {
-        userServiceImpl.addRole(user);
+        userServiceImpl.addUser(user);
         return "redirect:/admin";
     }
 }
