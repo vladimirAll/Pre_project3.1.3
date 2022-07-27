@@ -20,14 +20,14 @@
             <td th:utext="${users.getPassword}">password</td>
             <td th:utext="${users.getRoles()}">roles</td>
             <td>
-                <a th:href="@{update/{id} (id=${users.id})}">Изменить</a>
-                <a th:href="@{delete/{id} (id=${users.id})}">Удалить</a>
+                <a th:href="@{admin/update/{id} (id=${users.id})}">Изменить</a>
+                <a th:href="@{admin/delete/{id} (id=${users.id})}">Удалить</a>
 
             </td>
         </tr>
     </table>
 </div>
-<a href="/new">Добавить пользователя</a>
+<a href="/admin/new">Добавить пользователя</a>
 <br>
 <a href="/logout">Выйти</a>
 </body>
