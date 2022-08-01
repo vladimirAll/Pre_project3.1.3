@@ -11,10 +11,7 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
-
 import java.util.List;
-import java.util.Set;
-
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -49,8 +46,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        //Set<Role> roles = Set.of(roleRepository.getById(2L));
-        //user.setRoles(roles);
         userRepository.save(user);
     }
 
