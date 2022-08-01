@@ -1,44 +1,80 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>User</title>
+    <meta charset="utf-8">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<div>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Имя</th>
-        </tr>
-        <tr th:each="users : ${user}">
-            <td th:utext="${users.getId()}">name</td>
-            <td th:utext="${users.getUsername()}">username</td>
+    <!--Заголовок страницы-->
+    <div class="col-sm-12 p-2 bg-dark text-white ">
+        <a class="font-weight-bold text-white" th:text="${user.email}">Email </a>
+        <a> with role:</a>
 
-        </tr>
-    </table>
-</div>
-<a href="/logout">Выйти</a>
+        <a th:each="role : ${user.getRoles}">
+            <a th:text="${role.getRole()}">Roles</a>
+        </a>
+        <a th:href="@{/logout}" class="float-right text-secondary" > Logout </a>
+    </div>
+    <!--Конец заголовка-->
+    <!--Содержимое страницы-->
+    <div class="container-fluid bg-light">
+        <div class="row">
+          <!--Кнопка user-->
+            <div class="col-sm-2 bg-white min-vh-100">
+                <ul class="nav nav-pills flex-column">
+                    <br/>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/user}">User</a>
+                    </li>
+                </ul>
+            </div>
+            <!--user-->
+            <div class="col-sm-10 bg-light">
+                <br>
+                <h1>User information page</h1>
+                <div class="tab-content">
+                    <div class="tab-pane table-striped container-fluid active" id="table">
+                        <div class="row">
+                            <div class="col border bg-light">
+                                <p><h5>About user</h5></p>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col border bg-white">
+                                <br>
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Age</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="user : ${user}">
+                                            <td th:utext="${user.getId()}"></td>
+                                            <td th:utext="${user.getUsername()}"></td>
+                                            <td th:utext="${user.getLastname()}"></td>
+                                            <td th:utext="${user.getAge()}"></td>
+                                            <td th:utext="${user.getEmail()}"></td>
+                                            <td> <a th:each="role : ${user.getRoles()}">
+                                                <a th:text="${role.getRole()}"></a>
+                                            </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+         <!--Конец страницы-->
 </body>
 </html>
-<!--<!DOCTYPE html>-->
-<!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <title>User</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div>-->
-<!--    <table border="1">-->
-<!--        <tr>-->
-<!--            <th>ID</th>-->
-<!--            <th>Имя</th>-->
-<!--        </tr>-->
-<!--        <tr th:each="users : ${user}">-->
-<!--            <td th:utext="${users.getId()}">id</td>-->
-<!--            <td th:utext="${users.getUsername()}">username</td>-->
-<!--        </tr>-->
-<!--    </table>-->
-<!--</div>-->
-<!--<a href="/logout">Выйти</a>-->
-<!--</body>-->
-<!--</html>-->

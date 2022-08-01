@@ -11,6 +11,7 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
+
 import java.util.List;
 import java.util.Set;
 
@@ -48,19 +49,30 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Set<Role> roles = Set.of(roleRepository.getById(2L));
-        user.setRoles(roles);
+        //Set<Role> roles = Set.of(roleRepository.getById(2L));
+        //user.setRoles(roles);
         userRepository.save(user);
     }
 
+    @Override
+    @Transactional
+    public void update(User user) {
+        userRepository.save(user);
+    }
 
     @Override
-    public User findUserByUsername(String username) {
-        User userDb = userRepository.findByUsername(username);
-        if (userDb == null) {
-            throw new UsernameNotFoundException("Пользователь не найден");
-        }
-        return userDb;
+    public User findUserByName(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public List<Role> findRoles() {
+        return roleRepository.findAll();
+    }
+
+    @Override
+    public Role getRoleByName(String name) {
+        return  roleRepository.findRoleByName(name);
     }
 
     @Override

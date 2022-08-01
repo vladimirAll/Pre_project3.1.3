@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
+import java.security.Principal;
+import java.util.Collections;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -19,9 +22,11 @@ public class AdminController {
         this.userServiceImpl = userServiceImpl;
     }
 
-    @GetMapping
-    public String getUsers(Model model) {
-        model.addAttribute("user", userServiceImpl.findAllUsers());
+    @GetMapping()
+    public String adminInfo(Principal principal, Model model, @ModelAttribute("user") User user) {
+        model.addAttribute("admin", userServiceImpl.findUserByName(principal.getName()));
+        model.addAttribute("users", userServiceImpl.findAllUsers());
+        model.addAttribute("roles", userServiceImpl.findRoles());
         return "admin";
     }
 
@@ -31,27 +36,31 @@ public class AdminController {
         return "new";
     }
 
-    @PostMapping
-    public String addUser(@ModelAttribute("user") User user) {
+    @PostMapping("/new")
+    public String addUser(@ModelAttribute("user") User user,
+                          @RequestParam(value = "roleName", required = false) String roles) {
+        user.setRoles(Collections.singleton(userServiceImpl.getRoleByName(roles)));
         userServiceImpl.addUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("delete/{id}")
+    @PostMapping("/delete/{id}")
     public String deletePlayer(@PathVariable("id") Long id) {
         userServiceImpl.deleteUser(id);
         return "redirect:/admin";
     }
 
-    @GetMapping("update/{id}")
+    @GetMapping("/update/{id}")
     public String updateUser(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userServiceImpl.findById(id));
-        return "/update";
+        model.addAttribute("users", userServiceImpl.findById(id));
+        return "update";
     }
 
-    @PostMapping("update/{id}")
-    public String addUpdateUser(User user) {
-        userServiceImpl.addUser(user);
+    @PostMapping ("/update/{id}")
+    public String update(@ModelAttribute("users") User user,
+                         @RequestParam(value = "roleName", required = false) String roles) {
+        user.setRoles(Collections.singleton(userServiceImpl.getRoleByName(roles)));
+        userServiceImpl.update(user);
         return "redirect:/admin";
     }
 }
